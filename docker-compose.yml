@@ -1,0 +1,46 @@
+services:
+  cursor-wrapper:
+    build: .
+    image: cursor-wrapper:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Required: set your API key(s) here or via a .env file
+      CURSOR_WRAPPER_API_KEYS: ${CURSOR_WRAPPER_API_KEYS:?CURSOR_WRAPPER_API_KEYS is required}
+
+      # Optional — defaults match the Dockerfile ENV values
+      CURSOR_BIN: /usr/local/bin/cursor-agent
+      CURSOR_WORKDIR_ROOT: /var/cursor-jobs
+      CURSOR_WRAPPER_PORT: "3000"
+      CURSOR_TIMEOUT_MS: "120000"
+      CURSOR_MAX_OUTPUT_BYTES: "1048576"
+      CURSOR_MAX_CONCURRENCY: "2"
+
+      # Cursor API key — passed through to cursor-agent (from .env)
+      CURSOR_API_KEY: ${CURSOR_API_KEY}
+
+    volumes:
+      # Persistent working directory for job files
+      - cursor-jobs:/var/cursor-jobs
+
+      # Optional: mount a custom allowlist without rebuilding the image
+      # - ./config/allowlist.json:/app/config/allowlist.json:ro
+
+    # Prevent the container from gaining new privileges
+    security_opt:
+      - no-new-privileges:true
+
+    # Drop all Linux capabilities — the service needs none
+    cap_drop:
+      - ALL
+
+    read_only: true
+    tmpfs:
+      # cursor-agent may write temp files
+      - /tmp:size=128m,mode=1777
+      # home dir for the service user (cursor-agent caches go here)
+      - /home/cursorwrapper:size=256m,uid=999,gid=999
+
+volumes:
+  cursor-jobs:

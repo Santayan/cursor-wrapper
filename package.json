@@ -1,0 +1,19 @@
+{
+  "name": "cursor-wrapper",
+  "version": "1.0.0",
+  "description": "Lightweight HTTP service to expose Cursor CLI commands over a secure API",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

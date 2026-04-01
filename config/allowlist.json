@@ -1,0 +1,19 @@
+[
+  {
+    "command": "cursor",
+    "subcommands": [
+      "--version",
+      "-v",
+      "--help",
+      "--print",
+      "--trust",
+      "--yolo",
+      "-f",
+      "--output-format",
+      "--mode",
+      "--plan",
+      "--ask"
+    ],
+    "allowExtraArgs": true
+  }
+]
